@@ -2,10 +2,12 @@ require('dotenv').config()
 const express = require('express');
 const bodyParser = require('body-parser');
 const nodemailer = require('nodemailer');
+const cors = require('cors')
 
 const app = express();
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cors());
+app.use(bodyParser.json());
 
 const port = process.env.PORT || 3000;
 
@@ -27,19 +29,23 @@ app.get('/sendemail', (req, res) => {
 })
 
 app.post('/sendemail', (req, res) => {
+  console.log(req.body)
+
+  const email = req.body.email;
+  const message = req.body.message;
+
   const mailData = {
-    from: 'barentbetesting@gmail.com',
+    from: email,
     to: 'barentbetesting@gmail.com',
-    subject: 'SECOND TEST',
-    text: 'holy shit',
-    html: '<h1> Still workin! </h1>'
+    subject: 'Giving it another shot',
+    text: `text : ${message}`,
+    html: `<p>heres the message : ${message}</p>`
   };
   
   transporter.sendMail(mailData, function (err, info) {
-    if (err) return console.log(err)
+    if (err) res.send(err)
     else return console.log(info)
   })
-
 })
 
 
