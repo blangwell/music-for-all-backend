@@ -1,15 +1,16 @@
 require('dotenv').config()
-const express = require('express');
 const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
 const cors = require('cors')
+const express = require('express');
+const nodemailer = require('nodemailer');
+const port = process.env.PORT || 3000;
 
 const app = express();
 
 app.use(cors());
+app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-const port = process.env.PORT || 3000;
 
 // const route = express.Router();
 // app.use('/v1', route);
@@ -24,6 +25,11 @@ const transporter = nodemailer.createTransport({
   secure: true,
 });
 
+transporter.verify(function(error, success) {
+  if (error) console.log(error)
+  else console.log('server ready to receive messages')
+})
+
 app.get('/sendemail', (req, res) => {
   res.send('app hit');
 })
@@ -35,17 +41,25 @@ app.post('/sendemail', (req, res) => {
   const message = req.body.message;
 
   const mailData = {
-    from: email,
+    from: `${email}`,
     to: 'barentbetesting@gmail.com',
-    subject: 'Giving it another shot',
-    text: `text : ${message}`,
-    html: `<p>heres the message : ${message}</p>`
+    subject: `Music 4 All - ${message.slice(0, 20)}...`,
+    // text: `text : ${message}`,
+    html: `<p>from : ${email}</p> <p>message: ${message}</p>`
   };
   
   transporter.sendMail(mailData, function (err, info) {
-    if (err) res.send(err)
-    else return console.log(info)
+    if (err) res.json({status: 'fail'})
+    else return res.json({status: 'success'})
   })
+  // .then((sentMessage) => {
+  //   console.log('SENT!')
+  //   return res.send(sentMessage)
+  // })
+  // .catch(err => res.send(err))
+
+
+
 })
 
 
