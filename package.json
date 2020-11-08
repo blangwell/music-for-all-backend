@@ -1,0 +1,22 @@
+{
+  "name": "music-for-all-backend",
+  "version": "1.0.0",
+  "description": "This is the backend repo for the music for all site",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/blangwell/music-for-all-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/blangwell/music-for-all-backend/issues"
+  },
+  "homepage": "https://github.com/blangwell/music-for-all-backend#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
