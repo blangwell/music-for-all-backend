@@ -11,10 +11,6 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
-// const route = express.Router();
-// app.use('/v1', route);
-
 const transporter = nodemailer.createTransport({
   port: 465,
   host: 'smtp.gmail.com',
@@ -26,12 +22,8 @@ const transporter = nodemailer.createTransport({
 });
 
 transporter.verify(function(error, success) {
-  if (error) console.log(error)
+  if (error) console.log('MAMA MIA ISSA ERROR ', error)
   else console.log('server ready to receive messages')
-})
-
-app.get('/sendemail', (req, res) => {
-  res.send('app hit');
 })
 
 app.post('/sendemail', (req, res) => {
@@ -52,16 +44,6 @@ app.post('/sendemail', (req, res) => {
     if (err) res.json({status: 'fail'})
     else return res.json({status: 'success'})
   })
-  // .then((sentMessage) => {
-  //   console.log('SENT!')
-  //   return res.send(sentMessage)
-  // })
-  // .catch(err => res.send(err))
-
-
-
 })
-
-
 
 app.listen(port, () => console.log(`listenin' on port ${port}`))
