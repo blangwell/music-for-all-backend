@@ -4,8 +4,7 @@ const cors = require('cors')
 const express = require('express');
 const fetch = require('node-fetch')
 const nodemailer = require('nodemailer');
-const port = process.env.PORT || 3000;
-const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+const { PORT, PASS, RECAPTCHA_SECRET_KEY } = process.env;
 
 const app = express();
 
@@ -19,7 +18,7 @@ const transporter = nodemailer.createTransport({
   host: 'smtp.gmail.com',
     auth: {
       user: 'barentbetesting@gmail.com',
-      pass: process.env.PASS,
+      pass: PASS,
     },
   secure: true,
 });
@@ -42,7 +41,7 @@ app.post('/sendemail', async (req, res) => {
     text: `from: ${email}\nmessage : ${message}`,
   };
   
-  const captchaVerified = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${secretKey}&response=${token}`, {
+  const captchaVerified = await fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${token}`, {
     method: "POST"
   })
   .then(_res => _res.json())
@@ -59,7 +58,7 @@ app.post('/sendemail', async (req, res) => {
   res.end();
 })
 
-app.listen(port, () => console.log(`listenin' on port ${port}`))
+app.listen(PORT, () => console.log(`listenin' on port ${PORT}`))
 
 // const human = validateHuman(token);
 
